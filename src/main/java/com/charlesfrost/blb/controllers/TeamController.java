@@ -35,7 +35,7 @@ public class TeamController {
     public ResponseEntity<Team> save(@RequestBody @Valid TeamDTO teamDTO) {
         Team teamToSave = teamService.mapToTeam(teamDTO);
         teamToSave = teamService.save(teamToSave);
-        return ResponseEntity.ok(teamToSave);
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamToSave);
     }
 
     @DeleteMapping("/{id}")

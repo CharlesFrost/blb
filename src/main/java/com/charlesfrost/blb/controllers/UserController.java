@@ -1,7 +1,9 @@
 package com.charlesfrost.blb.controllers;
 
+import com.charlesfrost.blb.dto.UserDto;
 import com.charlesfrost.blb.models.User;
 import com.charlesfrost.blb.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +22,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody @Valid User user) {
-        User userToSave = userService.save(user);
-        return ResponseEntity.ok(userToSave);
+    public ResponseEntity<String> save(@RequestBody @Valid UserDto user) {
+        User userToSave = userService.mapToUser(user);
+        try {
+            userService.save(userToSave);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Sukces!");
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

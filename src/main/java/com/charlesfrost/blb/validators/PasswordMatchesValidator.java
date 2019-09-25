@@ -1,5 +1,6 @@
 package com.charlesfrost.blb.validators;
 
+import com.charlesfrost.blb.dto.UserDto;
 import com.charlesfrost.blb.models.User;
 
 import javax.validation.ConstraintValidator;
@@ -14,7 +15,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
    @Override
    public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-      User user = (User) o;
+      UserDto user = (UserDto) o;
       return user.getPassword().equals(user.getPasswordMatcher());
    }
 }

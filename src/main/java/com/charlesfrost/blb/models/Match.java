@@ -1,15 +1,20 @@
 package com.charlesfrost.blb.models;
 
+import com.charlesfrost.blb.validators.ValidateTeams;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "matches")
-public class Match {
+@ValidateTeams
+public class Match implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +28,49 @@ public class Match {
     private int awayTeamScore;
     @NotNull
     private LocalDate date;
+    @NotNull
+    private LocalTime time;
+    @Size(max = 64, min = 2)
+    @NotBlank
+    private String venue;
+
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public Match() {
+    }
+
+    public Match(Team homeTeam, Team awayTeam, @DecimalMin(value = "0") int homeTeamScore, @DecimalMin(value = "0") int awayTeamScore, @NotNull LocalDate date, @Size(max = 64, min = 2) @NotBlank String venue, @NotNull LocalTime time) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
+        this.date = date;
+        this.venue = venue;
+        this.time = time;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public Long getId() {
         return id;
@@ -64,11 +112,23 @@ public class Match {
         this.awayTeamScore = awayTeamScore;
     }
 
-    public LocalDate getDate() {
-        return date;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Match match = (Match) o;
+        return homeTeamScore == match.homeTeamScore &&
+                awayTeamScore == match.awayTeamScore &&
+                id.equals(match.id) &&
+                homeTeam.equals(match.homeTeam) &&
+                awayTeam.equals(match.awayTeam) &&
+                date.equals(match.date) &&
+                time.equals(match.time) &&
+                venue.equals(match.venue);
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, homeTeam, awayTeam, homeTeamScore, awayTeamScore, date, time, venue);
     }
 }

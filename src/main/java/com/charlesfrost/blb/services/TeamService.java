@@ -4,6 +4,7 @@ import com.charlesfrost.blb.dto.TeamDTO;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;

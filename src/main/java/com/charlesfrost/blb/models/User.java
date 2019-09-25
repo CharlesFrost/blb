@@ -13,18 +13,44 @@ import java.util.Date;
 
 @Entity
 @Table(name = "users")
-@PasswordMatches
-public class User extends Person{
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
     @Size(max = 64, min = 2)
     @NotBlank
     private String username;
-    @Size(max = 64, min = 2)
     @NotBlank
+    @Size(min = 8,message = "Hasło musi zawierać conajmniej 8 znaków!")
+    @JsonIgnore
     private String password;
     @Transient
     @JsonIgnore
     private String passwordMatcher;
     private String avatarUrl;
+    @ValidateEmail
+    @JsonIgnore
+    private String email;
+
+    public User() {
+    }
+
+    public User(@Size(max = 64, min = 2) @NotBlank String username, @Size(max = 64, min = 2) @NotBlank String password, String passwordMatcher, String avatarUrl, String email) {
+        this.username = username;
+        this.password = password;
+        this.passwordMatcher = passwordMatcher;
+        this.avatarUrl = avatarUrl;
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -40,20 +66,6 @@ public class User extends Person{
 
     public void setPasswordMatcher(String passwordMatcher) {
         this.passwordMatcher = passwordMatcher;
-    }
-
-    @ValidateEmail
-    private String email;
-
-    public User() {
-    }
-
-
-    public User(@Size(min = 2, max = 64) @NotBlank String firstName, @Size(min = 2, max = 64) @NotBlank String lastName, @NotNull LocalDate birthDate, @Size(max = 64, min = 2) @NotBlank String username, @Size(max = 64, min = 2) @NotBlank String password, String email) {
-        super(firstName, lastName, birthDate);
-        this.username = username;
-        this.password = password;
-        this.email = email;
     }
 
     public String getEmail() {

@@ -11,7 +11,7 @@ public class MyEmailValidator implements ConstraintValidator<ValidateEmail, Stri
    }
    @Override
    public boolean isValid(String obj, ConstraintValidatorContext context) {
-      Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$");
+      Pattern pattern = Pattern.compile("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$");
       Matcher matcher = pattern.matcher(obj);
       return matcher.matches();
    }

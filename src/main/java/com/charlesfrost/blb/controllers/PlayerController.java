@@ -39,7 +39,7 @@ public class PlayerController {
     @PostMapping
     public ResponseEntity<Player> savePlayer(@RequestBody @Valid Player player) {
         Player playerToSave = playerService.savePlayer(player);
-        return ResponseEntity.ok(playerToSave);
+        return ResponseEntity.status(HttpStatus.CREATED).body(playerToSave);
     }
 
     @DeleteMapping

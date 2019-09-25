@@ -1,5 +1,6 @@
 package com.charlesfrost.blb.services;
 
+import com.charlesfrost.blb.dto.UserDto;
 import com.charlesfrost.blb.models.User;
 import com.charlesfrost.blb.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,21 @@ public class UserService {
     }
 
     public User save(User user) {
-        return userRepository.save(user);
+        User existing = userRepository.findByUsername(user.getUsername());
+        if (existing==null) {
+            return userRepository.save(user);
+        } else {
+            throw new RuntimeException("Użytkownik o takiej nazwie już istnieje!");
+        }
     }
 
+    public User mapToUser(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setAvatarUrl(userDto.getAvatarUrl());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPasswordMatcher(userDto.getPasswordMatcher());
+        return user;
+    }
 }
