@@ -1,6 +1,7 @@
 package com.charlesfrost.blb.controllers;
 
 import com.charlesfrost.blb.dto.TeamDTO;
+import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.services.TeamService;
 import org.springframework.http.HttpStatus;
@@ -20,28 +21,31 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Team>> findAll() {
+    public ResponseEntity findAll() {
         List<Team> teams = teamService.findAll();
-        return ResponseEntity.ok(teams);
+        return ResponseEntity.ok(new ResponseBody("Sukces!",teams));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getOne(@PathVariable("id") Long id) {
+    public ResponseEntity getOne(@PathVariable("id") Long id) {
         Team team = teamService.getOne(id);
-        return ResponseEntity.ok(team);
+        if (team == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBody("Nie ma gracza o teamu o takim id",team));
+        }
+        return ResponseEntity.ok(new ResponseBody("Sukces!",team));
     }
 
     @PostMapping
-    public ResponseEntity<Team> save(@RequestBody @Valid TeamDTO teamDTO) {
+    public ResponseEntity save(@RequestBody @Valid TeamDTO teamDTO) {
         Team teamToSave = teamService.mapToTeam(teamDTO);
         teamToSave = teamService.save(teamToSave);
-        return ResponseEntity.status(HttpStatus.CREATED).body(teamToSave);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Suckes!",teamToSave));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity deleteById(@PathVariable(name = "id") Long id) {
         teamService.deleteById(id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(new ResponseBody("Sukces!",id));
     }
 
 }

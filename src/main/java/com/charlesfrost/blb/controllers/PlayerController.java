@@ -1,6 +1,7 @@
 package com.charlesfrost.blb.controllers;
 
 import com.charlesfrost.blb.models.Player;
+import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.services.PlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,32 +21,36 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Player> getOne(@PathVariable("id") Long playerId) {
+    public ResponseEntity getOne(@PathVariable("id") Long playerId) {
         Player player = playerService.getOne(playerId);
-        return ResponseEntity.ok(player);
+        if (player==null) {
+            return ResponseEntity.ok(new ResponseBody("Nie ma gracza o takim id",player));
+        }
+        return ResponseEntity.ok(new ResponseBody("Sukces!",player));
     }
 
     @GetMapping
-    public ResponseEntity<List<Player>> getPlayers(@RequestParam(name = "team_id", required = false) Long team_id) {
+    public ResponseEntity getPlayers(@RequestParam(name = "team_id", required = false) Long team_id) {
         List<Player> players;
         if (team_id==null) {
             players = playerService.getPlayers();
         } else {
             players = playerService.getPlayers(team_id);
         }
-        return ResponseEntity.ok(players);
+
+        return ResponseEntity.ok(new ResponseBody("Sukces!",players));
     }
 
     @PostMapping
-    public ResponseEntity<Player> savePlayer(@RequestBody @Valid Player player) {
+    public ResponseEntity savePlayer(@RequestBody @Valid Player player) {
         Player playerToSave = playerService.savePlayer(player);
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerToSave);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Sukces!",playerToSave));
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatus> deletePlayer(@PathVariable(name = "id") Long id) {
+    public ResponseEntity deletePlayer(@PathVariable(name = "id") Long id) {
         playerService.deleteById(id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(new ResponseBody("Sukces!",id));
     }
 
 }

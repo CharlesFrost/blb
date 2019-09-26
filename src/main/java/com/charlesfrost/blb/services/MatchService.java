@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,4 +54,11 @@ public class MatchService {
         return matchRepository.save(match);
     }
 
+    public Optional<Match> findById(Long id) {
+        return matchRepository.findById(id);
+    }
+
+    public void deleteById(Long id) {
+        matchRepository.deleteById(id);
+    }
 }

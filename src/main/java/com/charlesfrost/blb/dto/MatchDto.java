@@ -25,6 +25,8 @@ public class MatchDto {
     @Size(min = 2, max = 60)
     private String venue;
 
+
+
     public MatchDto(@DecimalMin("1") Long homeTeamId, @DecimalMin("1") Long awayTeamId, int homeTeamScore, int awayTeamScore, @NotNull LocalDate date, @NotNull LocalTime time, @NotBlank @Size(min = 2, max = 60) String venue) {
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;

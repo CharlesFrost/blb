@@ -1,6 +1,7 @@
 package com.charlesfrost.blb.controllers;
 
 import com.charlesfrost.blb.dto.UserDto;
+import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.models.User;
 import com.charlesfrost.blb.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody @Valid UserDto user) {
+    public ResponseEntity save(@RequestBody @Valid UserDto user) {
         User userToSave = userService.mapToUser(user);
         try {
             userService.save(userToSave);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Sukces!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Suckes!",true));
         } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBody("nie udało się dodać użytkownika",null));
         }
     }
 }
