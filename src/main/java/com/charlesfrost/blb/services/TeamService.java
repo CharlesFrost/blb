@@ -1,6 +1,7 @@
 package com.charlesfrost.blb.services;
 
 import com.charlesfrost.blb.dto.TeamDTO;
+import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,9 @@ public class TeamService {
 
     public void deleteById(Long id) {
         teamRepository.deleteById(id);
+    }
+
+    public Team findById(Long id) {
+        return teamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nie ma takiego teamu!"));
     }
 }

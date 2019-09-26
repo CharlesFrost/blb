@@ -24,7 +24,7 @@ public class PlayerController {
     public ResponseEntity getOne(@PathVariable("id") Long playerId) {
         Player player = playerService.getOne(playerId);
         if (player==null) {
-            return ResponseEntity.ok(new ResponseBody("Nie ma gracza o takim id",player));
+            return ResponseEntity.status(404).body(new ResponseBody("Nie ma gracza o takim id",player));
         }
         return ResponseEntity.ok(new ResponseBody("Sukces!",player));
     }

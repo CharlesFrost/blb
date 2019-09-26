@@ -1,10 +1,12 @@
 package com.charlesfrost.blb.controllers;
 
 import com.charlesfrost.blb.dto.TeamDTO;
+import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
 import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.services.TeamService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +42,19 @@ public class TeamController {
         Team teamToSave = teamService.mapToTeam(teamDTO);
         teamToSave = teamService.save(teamToSave);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Suckes!",teamToSave));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateTeam(@PathVariable(name = "id") Long id, @RequestBody @Valid TeamDTO teamDTO) {
+        try {
+            Team teamToUpdate = teamService.findById(id);
+            Team team = teamService.mapToTeam(teamDTO);
+            team.setId(teamToUpdate.getId());
+            teamService.save(team);
+            return ResponseEntity.ok(team);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseBody("Nie ma takiej drużyny!",teamDTO));
+        }
     }
 
     @DeleteMapping("/{id}")
