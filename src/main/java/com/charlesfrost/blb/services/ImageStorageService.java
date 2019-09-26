@@ -21,6 +21,9 @@ public class ImageStorageService {
     }
 
     public String storeImage(MultipartFile multipartFile) throws IOException {
+        if (!multipartFile.getContentType().contains("image")) {
+            throw new RuntimeException("To nie obrazek!");
+        }
         byte[] bytes = multipartFile.getBytes();
         Path path = Paths.get(UPLOAD_FOLDER + multipartFile.getOriginalFilename());
         Files.write(path,bytes);

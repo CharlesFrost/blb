@@ -7,15 +7,14 @@ import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.services.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 @RestController
 @RequestMapping("/api/post")
+@CrossOrigin
 public class PostController {
     private PostService postService;
 

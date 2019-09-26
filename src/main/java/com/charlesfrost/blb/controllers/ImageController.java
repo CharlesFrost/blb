@@ -28,7 +28,7 @@ public class ImageController {
         }
         try {
             imageName = imageStorageService.storeImage(multipartFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseBody("Błąd przy zapisywaniu obrazka", multipartFile.getOriginalFilename()));
         }
         return ResponseEntity.ok(imageName);
