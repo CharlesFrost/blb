@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -33,7 +34,6 @@ public class Match implements Serializable {
     @Size(max = 64, min = 2)
     @NotBlank
     private String venue;
-
 
     public LocalTime getTime() {
         return time;
