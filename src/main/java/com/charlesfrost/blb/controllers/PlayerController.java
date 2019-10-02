@@ -1,5 +1,6 @@
 package com.charlesfrost.blb.controllers;
 
+import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
 import com.charlesfrost.blb.models.Player;
 import com.charlesfrost.blb.models.ResponseBody;
 import com.charlesfrost.blb.services.PlayerService;
@@ -47,10 +48,24 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Sukces!",playerToSave));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity deletePlayer(@PathVariable(name = "id") Long id) {
         playerService.deleteById(id);
         return ResponseEntity.ok(new ResponseBody("Sukces!",id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity updatePlayer(@PathVariable(name = "id") Long id, @RequestBody @Valid Player player) {
+        try {
+            Player playerToUpdate = playerService.findById(id);
+            playerToUpdate.setPosition(player.getPosition());
+            playerToUpdate.setBirthDate(player.getBirthDate());
+            playerToUpdate.setFirstName(player.getFirstName());
+            playerToUpdate.setLastName(player.getLastName());
+            playerService.savePlayer(playerToUpdate);
+            return ResponseEntity.ok(new ResponseBody("Sukces!", playerToUpdate));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody("Nie znaleziono takiego gracza", player));
+        }
+    }
 }

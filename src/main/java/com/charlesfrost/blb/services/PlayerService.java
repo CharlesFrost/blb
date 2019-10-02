@@ -1,5 +1,6 @@
 package com.charlesfrost.blb.services;
 
+import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
 import com.charlesfrost.blb.models.Player;
 import com.charlesfrost.blb.repositories.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,9 @@ public class PlayerService {
 
     public void deleteById(Long id) {
         playerRepository.deleteById(id);
+    }
+
+    public Player findById(Long id) {
+        return playerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nie znaleziono takiego gracza!"));
     }
 }
