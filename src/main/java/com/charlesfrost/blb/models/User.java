@@ -32,8 +32,19 @@ public class User {
     @ValidateEmail
     @JsonIgnore
     private String email;
+    private String role;
+
 
     public User() {
+    }
+
+    public User(@Size(max = 64, min = 2) @NotBlank String username, @NotBlank @Size(min = 8, message = "Hasło musi zawierać conajmniej 8 znaków!") String password, String passwordMatcher, String avatarUrl, String email, String role) {
+        this.username = username;
+        this.password = password;
+        this.passwordMatcher = passwordMatcher;
+        this.avatarUrl = avatarUrl;
+        this.email = email;
+        this.role = role;
     }
 
     public User(@Size(max = 64, min = 2) @NotBlank String username, @Size(max = 64, min = 2) @NotBlank String password, String passwordMatcher, String avatarUrl, String email) {
@@ -42,6 +53,14 @@ public class User {
         this.passwordMatcher = passwordMatcher;
         this.avatarUrl = avatarUrl;
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {
