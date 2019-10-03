@@ -12,8 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import static com.charlesfrost.blb.security.JwtProperties.SIGN_UP_URL;
-
 @Configuration
 @EnableWebSecurity
 @CrossOrigin
