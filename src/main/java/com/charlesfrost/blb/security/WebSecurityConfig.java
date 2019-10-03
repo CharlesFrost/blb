@@ -54,8 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/player/**").hasAnyRole("MODERATOR", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/team/**").hasAnyRole("MODERATOR", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/coach/**").hasAnyRole("MODERATOR", "ADMIN")
-                .antMatchers("/image").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, SIGN_UP_URL).permitAll();
+                .antMatchers("/image").hasRole("ADMIN");
 
     }
 
