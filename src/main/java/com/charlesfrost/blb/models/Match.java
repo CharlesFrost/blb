@@ -34,6 +34,8 @@ public class Match implements Serializable {
     @Size(max = 64, min = 2)
     @NotBlank
     private String venue;
+    @ManyToMany
+    private Map<Integer,Integer> innings;
 
     public LocalTime getTime() {
         return time;

@@ -36,4 +36,8 @@ public class UserService {
     public User findById(Long authorId) {
         return userRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("Nie ma takiego autora!"));
     }
+
+    public User getOne(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nie ma takiego użytkownika"));
+    }
 }
