@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import static com.charlesfrost.blb.security.JwtProperties.SIGN_UP_URL;
 
 @Configuration
 @EnableWebSecurity
+@CrossOrigin
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailsService myUserDetailsService;
     private UserRepository userRepository;
@@ -32,8 +34,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
                 .authorizeRequests()
-                .antMatchers("/api/post").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll();
+                .antMatchers(HttpMethod.POST,"/api/post").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers(HttpMethod.POST, "/api/user").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/match").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/player").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/team").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/coach").hasAnyRole("MODERATOR", "ADMIN")
+
+                .antMatchers(HttpMethod.PUT,"/api/post/**").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers(HttpMethod.PUT, "/api/user/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/api/match/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/player/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/team/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/coach/**").hasAnyRole("MODERATOR", "ADMIN")
+
+                .antMatchers(HttpMethod.DELETE,"/api/post/**").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/api/match/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/player/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/team/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/coach/**").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers("/image").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, SIGN_UP_URL).permitAll();
 
     }
 
