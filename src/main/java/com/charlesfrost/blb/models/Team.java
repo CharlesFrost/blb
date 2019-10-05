@@ -28,6 +28,28 @@ public class Team {
     @NotNull
     private Coach coach;
     private String avatarUrl;
+    @NotNull
+    @OneToOne
+    private Statistic statistic;
+
+
+    public Team(@NotBlank @Size(max = 64, min = 2) String name, @NotNull LocalDate createDate, @NotNull Coach coach, String avatarUrl, @NotNull Statistic statistic) {
+        this.name = name;
+        this.createDate = createDate;
+        this.coach = coach;
+        this.avatarUrl = avatarUrl;
+        this.statistic = statistic;
+    }
+
+
+
+    public Statistic getStatistic() {
+        return statistic;
+    }
+
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;

@@ -2,8 +2,10 @@ package com.charlesfrost.blb.services;
 
 import com.charlesfrost.blb.dto.MatchDto;
 import com.charlesfrost.blb.models.Match;
+import com.charlesfrost.blb.models.Statistic;
 import com.charlesfrost.blb.repositories.MatchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.util.calendar.LocalGregorianCalendar;
 
 import javax.validation.Valid;
@@ -20,10 +22,12 @@ import java.util.stream.Collectors;
 public class MatchService {
     private MatchRepository matchRepository;
     private TeamService teamService;
+    private StatisticService statisticService;
 
-    public MatchService(MatchRepository matchRepository, TeamService teamService) {
+    public MatchService(MatchRepository matchRepository, TeamService teamService, StatisticService statisticService) {
         this.matchRepository = matchRepository;
         this.teamService = teamService;
+        this.statisticService = statisticService;
     }
 
     public Match getOne(Long id) {
@@ -50,7 +54,19 @@ public class MatchService {
         return match;
     }
 
+    @Transactional
     public Match save(Match match) {
+        Statistic awayTeamStatistics = statisticService.findByTeamId(match.getAwayTeam().getId());
+        Statistic homeTeamStatistics = statisticService.findByTeamId(match.getHomeTeam().getId());
+        if (match.getAwayTeamScore() > match.getHomeTeamScore()) {
+            awayTeamStatistics.setWins(awayTeamStatistics.getWins()+1);
+            homeTeamStatistics.setLost(homeTeamStatistics.getLost()+1);
+        } else {
+            awayTeamStatistics.setLost(awayTeamStatistics.getLost()+1);
+            homeTeamStatistics.setWins(homeTeamStatistics.getWins()+1);
+        }
+        statisticService.save(awayTeamStatistics);
+        statisticService.save(homeTeamStatistics);
         return matchRepository.save(match);
     }
 
@@ -61,4 +77,5 @@ public class MatchService {
     public void deleteById(Long id) {
         matchRepository.deleteById(id);
     }
+
 }

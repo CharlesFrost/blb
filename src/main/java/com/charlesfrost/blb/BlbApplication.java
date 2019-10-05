@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
@@ -40,16 +41,21 @@ public class BlbApplication {
     private UserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private StatisticRepostiory statisticRepostiory;
 
     @Bean
+    @Transactional
     CommandLineRunner init() {
         return args -> {
             playerRepository.save(new Player("Karol","Mróz", LocalDate.now().minusYears(22), "łączynik"));
             playerRepository.save(new Player("Czarek","Mikołajczyk", LocalDate.now().minusYears(10),"łączynik"));
             Coach coach = coachRepository.save(new Coach("Karol","Mroz",LocalDate.now().minusYears(11)));
             Coach coach2 = coachRepository.save(new Coach("Karol","Mroz",LocalDate.now().minusYears(11)));
-            Team team1 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach));
-            Team team2 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach2));
+            Statistic stat1 = statisticRepostiory.save(new Statistic(1,2));
+            Statistic stat2 = statisticRepostiory.save(new Statistic(5,2));
+            Team team1 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach,"xD",stat1));
+            Team team2 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach2,"xDDD",stat2));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team2,team1,4,2, LocalDate.now().plusDays(1),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().plusHours(2)));
@@ -65,7 +71,6 @@ public class BlbApplication {
             postRepository.save(new Post(user1,"kurestwo","SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSScontent",LocalDate.now()));
             postRepository.save(new Post(user1,"kurestwo","SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSScontent",LocalDate.now()));
             postRepository.save(new Post(user1,"kurestwo","SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSScontent",LocalDate.now()));
-
 
 
         };
