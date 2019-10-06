@@ -1,6 +1,7 @@
 package com.charlesfrost.blb.models;
 
 import com.charlesfrost.blb.validators.ValidateTeams;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "matches")
 @ValidateTeams
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Match implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

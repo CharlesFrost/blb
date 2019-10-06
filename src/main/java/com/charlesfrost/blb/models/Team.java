@@ -1,6 +1,8 @@
 package com.charlesfrost.blb.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +25,7 @@ public class Team {
     @NotNull
     private LocalDate createDate;
     @OneToMany
+    @Fetch(FetchMode.JOIN)
     private Set<Player> players;
     @OneToOne
     @NotNull
@@ -112,4 +115,5 @@ public class Team {
     public void setCoach(Coach coach) {
         this.coach = coach;
     }
+
 }

@@ -6,14 +6,9 @@ import com.charlesfrost.blb.models.Statistic;
 import com.charlesfrost.blb.repositories.MatchRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.util.calendar.LocalGregorianCalendar;
 
-import javax.validation.Valid;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,8 +60,12 @@ public class MatchService {
             awayTeamStatistics.setLost(awayTeamStatistics.getLost()+1);
             homeTeamStatistics.setWins(homeTeamStatistics.getWins()+1);
         }
-        statisticService.save(awayTeamStatistics);
+        homeTeamStatistics = statisticService.countStatistics(homeTeamStatistics);
+        awayTeamStatistics = statisticService.countStatistics(awayTeamStatistics);
+        statisticService.setTeamsPositions();
         statisticService.save(homeTeamStatistics);
+        statisticService.save(awayTeamStatistics);
+
         return matchRepository.save(match);
     }
 
