@@ -23,7 +23,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Post>> getPages(@RequestParam(name = "page",defaultValue = "0") int page, @RequestParam(name = "size",defaultValue = "1") int size) {
+    public ResponseEntity<Page<Post>> getPages(@RequestParam(name = "page",defaultValue = "0") int page, @RequestParam(name = "size",defaultValue = "4") int size) {
         Page<Post> posts = postService.showPage(page,size);
         return ResponseEntity.ok(posts);
     }

@@ -4,6 +4,7 @@ import com.charlesfrost.blb.dto.TeamDTO;
 import com.charlesfrost.blb.models.*;
 import com.charlesfrost.blb.repositories.*;
 import com.charlesfrost.blb.services.MatchService;
+import com.charlesfrost.blb.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ public class BlbApplication {
     @Autowired
     private PlayerRepository playerRepository;
     @Autowired
-    private TeamRepository teamRepository;
+    private TeamService teamRepository;
     @Autowired
     private CoachRepository coachRepository;
     @Autowired
@@ -52,10 +53,8 @@ public class BlbApplication {
             playerRepository.save(new Player("Czarek","Mikołajczyk", LocalDate.now().minusYears(10),"łączynik"));
             Coach coach = coachRepository.save(new Coach("Karol","Mroz",LocalDate.now().minusYears(11)));
             Coach coach2 = coachRepository.save(new Coach("Karol","Mroz",LocalDate.now().minusYears(11)));
-            Statistic stat1 = statisticRepostiory.save(new Statistic(1,2));
-            Statistic stat2 = statisticRepostiory.save(new Statistic(5,2));
-            Team team1 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach,"xD",stat1));
-            Team team2 = teamRepository.save(new Team("Legia",LocalDate.now().minusYears(1),coach2,"xDDD",stat2));
+            Team team1 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach.getId()));
+            Team team2 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach2.getId()));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team2,team1,4,2, LocalDate.now().plusDays(1),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().plusHours(2)));

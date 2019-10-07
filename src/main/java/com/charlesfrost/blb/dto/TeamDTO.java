@@ -21,6 +21,12 @@ public class TeamDTO {
     @DecimalMin("1")
     private Long coachId;
 
+    public TeamDTO(@NotBlank @Size(max = 64, min = 2) String name, @NotNull LocalDate createDate, @DecimalMin("1") Long coachId) {
+        this.name = name;
+        this.createDate = createDate;
+        this.coachId = coachId;
+    }
+
     public String getName() {
         return name;
     }
