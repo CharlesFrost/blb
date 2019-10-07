@@ -4,6 +4,7 @@ import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
 import com.charlesfrost.blb.models.Statistic;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.repositories.StatisticRepostiory;
+import com.charlesfrost.blb.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,11 @@ import java.util.List;
 @Service
 public class StatisticService {
     private StatisticRepostiory statisticRepostiory;
-    private TeamService teamService;
+    private TeamRepository teamRepository;
 
-    public StatisticService(StatisticRepostiory statisticRepostiory, TeamService teamService) {
+    public StatisticService(StatisticRepostiory statisticRepostiory, TeamRepository teamRepository) {
         this.statisticRepostiory = statisticRepostiory;
-        this.teamService = teamService;
+        this.teamRepository = teamRepository;
     }
 
     public Statistic updateStatistic(Long id, Statistic statistic) {
@@ -39,7 +40,7 @@ public class StatisticService {
 
     @Transactional
     public void setTeamsPositions() {
-        List<Team> teams = teamService.findAll();
+        List<Team> teams = teamRepository.findAll();
         teams.sort((o1, o2) -> o1.getStatistic().compareTo(o2.getStatistic()));
         Statistic statistic;
         for (Team team : teams) {
