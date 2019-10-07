@@ -42,6 +42,18 @@ public class StatisticService {
     public void setTeamsPositions() {
         List<Team> teams = teamRepository.findAll();
         teams.sort((o1, o2) -> o1.getStatistic().compareTo(o2.getStatistic()));
+        for (Team team : teams) {
+            try {
+                Team nextTeam = teams.get(teams.indexOf(team)+1);
+                if (team.getStatistic().getPoints() == nextTeam.getStatistic().getPoints() &&
+                        team.getStatistic().getLost() > nextTeam.getStatistic().getLost()) {
+                    teams.set(teams.indexOf(nextTeam),team);
+                    teams.set(teams.indexOf(team),nextTeam);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                break;
+            }
+        }
         Statistic statistic;
         for (Team team : teams) {
             statistic = team.getStatistic();

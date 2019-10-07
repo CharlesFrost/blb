@@ -55,6 +55,8 @@ public class BlbApplication {
             Coach coach2 = coachRepository.save(new Coach("Karol","Mroz",LocalDate.now().minusYears(11)));
             Team team1 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach.getId()));
             Team team2 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach2.getId()));
+            Team team3 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach2.getId()));
+            Team team4 = teamRepository.createTeam(new TeamDTO("Legia",LocalDate.now().minusYears(1),coach2.getId()));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team2,team1,4,2, LocalDate.now().plusDays(1),"burdel", LocalTime.now().minusHours(1)));
             matchRepository.save(new Match(team1,team2,1,2, LocalDate.now(),"burdel", LocalTime.now().plusHours(2)));
