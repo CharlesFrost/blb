@@ -13,6 +13,4 @@ import java.util.Optional;
 public interface StatisticRepostiory extends JpaRepository<Statistic, Long> {
     @Query(value = "SELECT * FROM STATISTICS WHERE ID=(SELECT STATISTIC_ID FROM TEAMS WHERE ID=?1)", nativeQuery = true)
     Statistic findByTeamId(Long id);
-
-    Optional<Statistic> findByTeam(Team team);
 }
