@@ -28,6 +28,7 @@ public class Statistic implements Comparable, Serializable {
         this.points=0;
     }
 
+
     public int getPoints() {
         return points;
     }

@@ -39,8 +39,7 @@ public class TeamController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid TeamDTO teamDTO) {
-        Team teamToSave = teamService.mapToTeam(teamDTO);
-        teamToSave = teamService.save(teamToSave);
+        Team teamToSave = teamService.createTeam(teamDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBody("Suckes!",teamToSave));
     }
 

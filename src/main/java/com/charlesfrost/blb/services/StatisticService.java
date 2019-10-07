@@ -53,6 +53,6 @@ public class StatisticService {
         statistic.setPlayed(statistic.getLost()+statistic.getWins());
         statistic.setPoints(statistic.getWins()*3);
         return statistic;
-       // statistic.setRankingPosition();
     }
+
 }

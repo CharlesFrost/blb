@@ -2,6 +2,7 @@ package com.charlesfrost.blb.services;
 
 import com.charlesfrost.blb.dto.TeamDTO;
 import com.charlesfrost.blb.exceptions.ResourceNotFoundException;
+import com.charlesfrost.blb.models.Statistic;
 import com.charlesfrost.blb.models.Team;
 import com.charlesfrost.blb.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class TeamService {
     private TeamRepository teamRepository;
     private PlayerService playerService;
     private CoachService coachService;
+    private StatisticService statisticService;
 
     public TeamService(TeamRepository teamRepository, PlayerService playerService, CoachService coachService) {
         this.teamRepository = teamRepository;
@@ -31,6 +33,13 @@ public class TeamService {
     }
 
     public Team save(Team team) {
+        return teamRepository.save(team);
+    }
+
+    public Team createTeam(TeamDTO teamDTO) {
+        Statistic statistic = statisticService.save(new Statistic());
+        Team team = mapToTeam(teamDTO);
+        team.setStatistic(statistic);
         return teamRepository.save(team);
     }
 
