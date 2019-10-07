@@ -18,10 +18,11 @@ public class TeamService {
     private CoachService coachService;
     private StatisticService statisticService;
 
-    public TeamService(TeamRepository teamRepository, PlayerService playerService, CoachService coachService) {
+    public TeamService(TeamRepository teamRepository, PlayerService playerService, CoachService coachService, StatisticService statisticService) {
         this.teamRepository = teamRepository;
         this.playerService = playerService;
         this.coachService = coachService;
+        this.statisticService = statisticService;
     }
 
     public List<Team> findAll() {
@@ -36,6 +37,7 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    @Transactional
     public Team createTeam(TeamDTO teamDTO) {
         Statistic statistic = statisticService.save(new Statistic());
         Team team = mapToTeam(teamDTO);
